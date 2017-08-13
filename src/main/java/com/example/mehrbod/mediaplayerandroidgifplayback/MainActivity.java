@@ -1,74 +1,46 @@
 package com.example.mehrbod.mediaplayerandroidgifplayback;
 
-import android.graphics.SurfaceTexture;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Surface;
-import android.view.TextureView;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
-import java.io.IOException;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
-public class MainActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener{
+import java.util.ArrayList;
+import java.util.List;
 
-    private MediaPlayer mMediaPlayer;
+public class MainActivity extends AppCompatActivity {
 
-    private TextureView mPreview;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fresco.initialize(this);
         setContentView(R.layout.activity_main);
 
-        mPreview = (TextureView) findViewById(R.id.surface);
-        mPreview.setSurfaceTextureListener(this);
-    }
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-    @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        Surface s = new Surface(surface);
+        List<GifModel> list = new ArrayList<>();
+        list.add(new GifModel("/storage/emulated/0/Download/ge.mp4"));
+        list.add(new GifModel("/storage/emulated/0/Download/ge.mp4"));
+        list.add(new GifModel("/storage/emulated/0/Download/ge.mp4"));
+        list.add(new GifModel("/storage/emulated/0/Download/ge.mp4"));
+        list.add(new GifModel("/storage/emulated/0/Download/ge.mp4"));
+        list.add(new GifModel("/storage/emulated/0/Download/ge.mp4"));
+        list.add(new GifModel("/storage/emulated/0/Download/ge.mp4"));
+        list.add(new GifModel("/storage/emulated/0/Download/ge.mp4"));
+        list.add(new GifModel("/storage/emulated/0/Download/ge.mp4"));
+        list.add(new GifModel("/storage/emulated/0/Download/ge.mp4"));
+        list.add(new GifModel("/storage/emulated/0/Download/ge.mp4"));
+        list.add(new GifModel("/storage/emulated/0/Download/ge.mp4"));
 
-        try {
-            mMediaPlayer= new MediaPlayer();
-            mMediaPlayer.setDataSource("/storage/emulated/0/Download/ge.mp4");
-            mMediaPlayer.setSurface(s);
-            mMediaPlayer.prepare();
-            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mMediaPlayer.start();
-            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    mMediaPlayer.start();
-                }
-            });
-        } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
 
-    @Override
-    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+        GifAdapter adapter = new GifAdapter(this, list);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
 
     }
 
-    @Override
-    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        return false;
-    }
-
-    @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
-    }
 }
